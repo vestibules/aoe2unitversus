@@ -39,7 +39,7 @@ class unit:
         return stats
 
 class physicalUnit(unit):
-    type = 'Unité au corps à corps'
+    typeUnit = 'Unité au corps à corps'
     def __init__(self,list):
         super().__init__(list)
 
@@ -55,9 +55,9 @@ class physicalUnit(unit):
         print(f"{self.name} inflige {calcul} dégâts à {oponent.name} ! {armorMessage}" )
 
 class rangeUnit(unit):
-    type = 'Unité à distance'
-    def __init__(self,list):
-        super().__init__(list)
+    typeUnit = 'Unité à distance'
+    def __init__(self,valuelist):
+        super().__init__(valuelist)
 
     def attack(self, oponent):
         calcul = int(self.attackPoint) - int(oponent.rangeArmor)
@@ -81,17 +81,17 @@ def choiceUnit():
         else:
             listUnits.append(physicalUnit(selected))
     for i in listUnits:
-        print(f'{i.name} : {i.type}')
+        print(f'{i.name} : {i.typeUnit}')
         print(f'Armure corps à corps : {i.cacArmor} | Armure perçage : {i.rangeArmor}')
 
-def battle(list):
-    while list[0].isAlive() == True or list[1].isAlive == True:
-        for i in range(len(list)):
-            list[i].attack(list[i-1])
+def battle(objectlist):
+    while objectlist[0].isAlive() == True or objectlist[1].isAlive == True:
+        for i in range(len(objectlist)):
+            objectlist[i].attack(objectlist[i-1])
             time.sleep(0.5)
-        for i in range(len(list)):
-            if list[i].isAlive() == False:
-                for i in list:
+        for i in range(len(objectlist)):
+            if objectlist[i].isAlive() == False:
+                for i in objectlist:
                     if i.life > 0:
                         print(f'{i.name} est victorieux !')
                 return
