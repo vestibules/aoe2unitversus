@@ -85,7 +85,7 @@ def choiceUnit():
         print(f'Armure corps à corps : {i.cacArmor} | Armure perçage : {i.rangeArmor}')
 
 def battle(objectlist):
-    while objectlist[0].isAlive() == True or objectlist[1].isAlive == True:
+    while objectlist[0].isAlive() or objectlist[1].isAlive:
         for i in range(len(objectlist)):
             objectlist[i].attack(objectlist[i-1])
             time.sleep(0.5)
