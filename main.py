@@ -44,6 +44,9 @@ class physicalUnit(unit):
         super().__init__(list)
 
     def attack(self, oponent):
+        if self.attackPoint == 0:
+            print(f'{self.name} ne fait aucun dégât !')
+            return
         calcul = int(self.attackPoint) - int(oponent.cacArmor)
         if calcul < 1:
             calcul = 1
@@ -60,6 +63,9 @@ class rangeUnit(unit):
         super().__init__(valuelist)
 
     def attack(self, oponent):
+        if self.attackPoint == 0:
+            print(f'{self.name} ne fait aucun dégât !')
+            return
         calcul = int(self.attackPoint) - int(oponent.rangeArmor)
         if calcul < 1:
             calcul = 1
