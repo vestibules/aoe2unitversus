@@ -40,8 +40,8 @@ class unit:
 
 class physicalUnit(unit):
     typeUnit = 'Unité au corps à corps'
-    def __init__(self,list):
-        super().__init__(list)
+    def __init__(self,dic):
+        super().__init__(dic)
 
     def attack(self, oponent):
         if self.attackPoint == 0:
@@ -54,13 +54,13 @@ class physicalUnit(unit):
         else:
             oponent.life -= calcul
         absorbed = self.attackPoint - calcul
-        armorMessage = f"L'amure corps à corps a absorbé {absorbed} dégâts."
+        armorMessage = f"L'armure corps à corps a absorbé {absorbed} dégâts."
         print(f"{self.name} inflige {calcul} dégâts à {oponent.name} ! {armorMessage}" )
 
 class rangeUnit(unit):
     typeUnit = 'Unité à distance'
-    def __init__(self,valuelist):
-        super().__init__(valuelist)
+    def __init__(self,dic):
+        super().__init__(dic)
 
     def attack(self, oponent):
         if self.attackPoint == 0:
@@ -73,7 +73,7 @@ class rangeUnit(unit):
         else:
             oponent.life -= calcul
         absorbed = self.attackPoint - calcul
-        armorMessage = f"L'amure perçage a absorbé {absorbed} dégâts."
+        armorMessage = f"L'armure perçage a absorbé {absorbed} dégâts."
         print(f"{self.name} inflige {calcul} dégâts à {oponent.name} ! {armorMessage}" )
 
 def choiceUnit():
