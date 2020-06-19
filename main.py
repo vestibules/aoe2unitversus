@@ -69,16 +69,28 @@ class rangeUnit(unit):
     def __init__(self,dic):
         super().__init__(dic)
         self.range = self.getRange(dic)
+        self.speed = dic.get('movement_rate')
+        self.position = self.getRange(dic)
 
     def getRange(self,dic):
         stat = dic.get('range')
         if (self.name).lower() == 'archer':
             return 3
         else:
-            stat = dic.get('range')
-            return stat
+            try:
+                if len(stat) > 2:
+                    stat.split('-')
+                    stat = int(stat[2])
+                    return stat
+            except TypeError:
+                return stat
 
     def attack(self, oponent):
+        if oponent.typeUnit == 'Unité à distance':
+            while self.position < oponent.range:
+                print(f'{self.name} se rapproche ...')
+                self.position += self.speed
+                return
         if self.attackPoint == 0:
             print(f'{self.name} ne fait aucun dégât !')
             return
