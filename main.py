@@ -42,8 +42,15 @@ class physicalUnit(unit):
     typeUnit = 'Unité au corps à corps'
     def __init__(self,dic):
         super().__init__(dic)
+        self.speed = dic.get('movement_rate')
 
     def attack(self, oponent):
+        if oponent.typeUnit == 'Unité à distance':
+            while self.speed < oponent.range:
+                speed = self.speed
+                print(f'{self.name} se rapproche ...')
+                self.speed += speed
+                return
         if self.attackPoint == 0:
             print(f'{self.name} ne fait aucun dégât !')
             return
@@ -61,6 +68,15 @@ class rangeUnit(unit):
     typeUnit = 'Unité à distance'
     def __init__(self,dic):
         super().__init__(dic)
+        self.range = self.getRange(dic)
+
+    def getRange(self,dic):
+        stat = dic.get('range')
+        if (self.name).lower() == 'archer':
+            return 3
+        else:
+            stat = dic.get('range')
+            return stat
 
     def attack(self, oponent):
         if self.attackPoint == 0:
