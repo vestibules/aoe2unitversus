@@ -41,8 +41,8 @@ class unit:
         return stats
 
     def getATB(self):
+        self.ATB += 1
         if self.ATB < self.reload_time:
-            self.ATB += 1
             return False
         else:
             self.ATB = 0
@@ -94,7 +94,7 @@ class rangeUnit(unit):
             return 3
         else:
             try:
-                if '.' in stat:
+                if '.' in stat or '(' in stat:
                     stat = int(stat[0])
                     return stat
                 elif len(stat) > 2:
