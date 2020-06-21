@@ -5,12 +5,14 @@ listValues = []   # contains a list of all characteristics value of the selected
 listUnits = []    # contains created units objects
 
 class unit:
+    ATB = 0
     def __init__(self,dic):
         self.name = dic.get('name')
         self.life = dic.get('hit_points')
         self.attackPoint = self.getAttackPoint(dic)
         self.cacArmor = self.getArmorcac(dic)
         self.rangeArmor = self.getRangeArmor(dic)
+        self.reload_time = dic.get('reload_time')
     
     def isAlive(self):
         if self.life > 0:
@@ -38,6 +40,16 @@ class unit:
         stats = stats[1]
         return stats
 
+    def getATB(self):
+        if self.ATB < self.reload_time:
+            self.ATB += 1
+            return False
+        else:
+            self.ATB = 0
+            return True
+
+
+
 class physicalUnit(unit):
     position = 0
     typeUnit = 'Unité au corps à corps'
@@ -51,18 +63,22 @@ class physicalUnit(unit):
                 print(f'{self.name} se rapproche ...')
                 self.position += self.speed
                 return
-        if self.attackPoint == 0:
-            print(f'{self.name} ne fait aucun dégât !')
-            return
-        calcul = int(self.attackPoint) - int(oponent.cacArmor)
-        if calcul < 1:
-            calcul = 1
-            oponent.life -= calcul
+        canAttack = self.getATB()
+        if canAttack:
+            if self.attackPoint == 0:
+                print(f'{self.name} ne fait aucun dégât !')
+                return
+            calcul = int(self.attackPoint) - int(oponent.cacArmor)
+            if calcul < 1:
+                calcul = 1
+                oponent.life -= calcul
+            else:
+                oponent.life -= calcul
+            absorbed = self.attackPoint - calcul
+            armorMessage = f"L'armure corps à corps a absorbé {absorbed} dégâts."
+            print(f"{self.name} inflige {calcul} dégâts à {oponent.name} ! {armorMessage}" )
         else:
-            oponent.life -= calcul
-        absorbed = self.attackPoint - calcul
-        armorMessage = f"L'armure corps à corps a absorbé {absorbed} dégâts."
-        print(f"{self.name} inflige {calcul} dégâts à {oponent.name} ! {armorMessage}" )
+            return
 
 class rangeUnit(unit):
     typeUnit = 'Unité à distance'
@@ -78,9 +94,12 @@ class rangeUnit(unit):
             return 3
         else:
             try:
-                if len(stat) > 2:
-                    stat.split('-')
-                    stat = int(stat[2])
+                if '.' in stat:
+                    stat = int(stat[0])
+                    return stat
+                elif len(stat) > 2:
+                    statList = stat.split('-')
+                    stat = int(statList[1])
                     return stat
             except TypeError:
                 return stat
@@ -91,18 +110,22 @@ class rangeUnit(unit):
                 print(f'{self.name} se rapproche ...')
                 self.position += self.speed
                 return
-        if self.attackPoint == 0:
-            print(f'{self.name} ne fait aucun dégât !')
-            return
-        calcul = int(self.attackPoint) - int(oponent.rangeArmor)
-        if calcul < 1:
-            calcul = 1
-            oponent.life -= calcul
+        canAttack = self.getATB()
+        if canAttack:
+            if self.attackPoint == 0:
+                print(f'{self.name} ne fait aucun dégât !')
+                return
+            calcul = int(self.attackPoint) - int(oponent.rangeArmor)
+            if calcul < 1:
+                calcul = 1
+                oponent.life -= calcul
+            else:
+                oponent.life -= calcul
+            absorbed = self.attackPoint - calcul
+            armorMessage = f"L'armure perçage a absorbé {absorbed} dégâts."
+            print(f"{self.name} inflige {calcul} dégâts à {oponent.name} ! {armorMessage}" )
         else:
-            oponent.life -= calcul
-        absorbed = self.attackPoint - calcul
-        armorMessage = f"L'armure perçage a absorbé {absorbed} dégâts."
-        print(f"{self.name} inflige {calcul} dégâts à {oponent.name} ! {armorMessage}" )
+            return
 
 def choiceUnit():
     global listUnits
